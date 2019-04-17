@@ -1,0 +1,19 @@
+version: '3.7'
+
+services:
+  api:
+    build:
+      context: ./svc
+      dockerfile: Dockerfile
+    image: cd-docker-secrets/api
+    ports:
+      - "3000:3000"
+    environment:
+      - LP_TOKEN=abc
+      - LP_TOKEN_PATH=/run/secrets/lp_token
+    secrets:
+      - lp_token
+
+secrets:
+  lp_token:
+    external: true

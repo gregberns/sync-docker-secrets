@@ -1,0 +1,27 @@
+version: '3.7'
+
+services:
+  mgr:
+    build: .
+    image: cd-docker-secrets/mgr
+    command: "bash /run.sh"
+    environments:
+      - "env=dev"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    secrets:
+      - lastpass_username
+      - lastpass_password
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+      restart_policy:
+        condition: none
+
+secrets:
+  lastpass_username:
+      external: true
+  lastpass_password:
+      external: true
